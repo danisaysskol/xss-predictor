@@ -2,6 +2,7 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import joblib
+import os
 
 # Load models
 model_path = "xss_classifier.pkl"
@@ -16,10 +17,13 @@ except Exception as e:
 # FastAPI app
 app = FastAPI()
 
-# CORS Middleware
+# Update CORS middleware with your Vercel domain
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Allows all origins, adjust for production
+    allow_origins=[
+        "http://localhost:3000",
+        "https://xssdetector.live", 
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -42,6 +46,7 @@ async def predict(input: ScriptInput):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run(app, host="127.0.0.1", port=8000)
+# Add a health check endpoint
+@app.get("/")
+async def root():
+    return {"message": "XSS Detection API is running"}
