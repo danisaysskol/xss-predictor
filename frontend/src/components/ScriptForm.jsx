@@ -2,6 +2,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000';
+
 const ScriptForm = () => {
   const [script, setScript] = useState('');
   const [result, setResult] = useState(null);
@@ -14,7 +16,7 @@ const ScriptForm = () => {
     setError(null);
 
     try {
-      const response = await axios.post('http://127.0.0.1:8000/predict/', {
+      const response = await axios.post(`${API_URL}/predict/`, {
         sentence: script
       });
       setResult(response.data);
