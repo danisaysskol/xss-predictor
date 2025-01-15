@@ -1,10 +1,12 @@
+// src/components/ScriptForm.jsx
 import React, { useState } from 'react';
 import axios from 'axios';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000';
-
 const ScriptForm = () => {
-  // ... rest of your component code ...
+  const [script, setScript] = useState('');
+  const [result, setResult] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -12,7 +14,7 @@ const ScriptForm = () => {
     setError(null);
 
     try {
-      const response = await axios.post(`${API_URL}/predict/`, {
+      const response = await axios.post('http://127.0.0.1:8000/predict/', {
         sentence: script
       });
       setResult(response.data);
@@ -23,7 +25,6 @@ const ScriptForm = () => {
       setLoading(false);
     }
   };
-
 
   return (
     <div className="form-container">
