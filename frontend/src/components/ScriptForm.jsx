@@ -16,7 +16,7 @@ const ScriptForm = () => {
     setError(null);
 
     try {
-      const response = await axios.post(`${API_URL}/predict/`, {
+      const response = await axios.post(`${API_URL}/predict`, {
         sentence: script
       });
       setResult(response.data);
